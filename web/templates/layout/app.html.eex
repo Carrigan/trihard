@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Trihard - Stupid Simple Training for Triathletes</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  </head>
+
+  <body>
+
+    <header class="header">
+      <div class="container">
+        <nav role="navigation">
+          <a class="navbar-brand">TriHard</a>
+          <ul class="nav nav-pills pull-right">
+            <%= if logged_in?(@conn) do %>
+              <li><%= link "Home", to: page_path(@conn, :index) %></li>
+              <li><%= link "Logout", to: session_path(@conn, :delete) %></li>
+            <% else %>
+              <li><%= link "Login",    to: "/login" %></li>
+              <li><%= link "Register", to: registration_path(@conn, :new) %></li>
+            <% end %>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main role="main">
+      <%= render @view_module, @view_template, assigns %>
+    </main>
+
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>
