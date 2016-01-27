@@ -1,0 +1,30 @@
+<h2>Listing workouts</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Name</th>
+      <th>User</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for workout <- @workouts do %>
+    <tr>
+      <td><%= workout.date %></td>
+      <td><%= workout.name %></td>
+      <td><%= workout.user_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: workout_path(@conn, :show, workout), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: workout_path(@conn, :edit, workout), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: workout_path(@conn, :delete, workout), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New workout", to: workout_path(@conn, :new) %>
