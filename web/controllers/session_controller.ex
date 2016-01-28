@@ -9,7 +9,7 @@ defmodule Trihard.SessionController do
     case Trihard.Session.login(session_params, Trihard.Repo) do
       {:ok, user} ->
         conn
-        |> put_session(:current_user, user.id)
+        |> put_session(:user_id, user.id)
         |> put_flash(:info, "Logged in")
         |> redirect(to: "/")
       :error ->
@@ -21,7 +21,7 @@ defmodule Trihard.SessionController do
 
   def delete(conn, _) do
     conn
-    |> delete_session(:current_user)
+    |> delete_session(:user_id)
     |> put_flash(:info, "Logged out")
     |> redirect(to: "/")
   end

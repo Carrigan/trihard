@@ -18,7 +18,7 @@
         <nav role="navigation">
           <a class="navbar-brand">TriHard</a>
           <ul class="nav nav-pills pull-right">
-            <%= if logged_in?(@conn) do %>
+            <%= if @conn.assigns.current_user do %>
               <li><%= link "Home", to: page_path(@conn, :index) %></li>
               <li><%= link "Logout", to: session_path(@conn, :delete) %></li>
             <% else %>

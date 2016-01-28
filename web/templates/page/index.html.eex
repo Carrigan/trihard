@@ -1,8 +1,8 @@
-<%= if logged_in?(@conn) do %>
+<%= if @conn.assigns.current_user do %>
 
 <div class="jumbotron-logged">
   <div class="container">
-    <h1><%= current_user(@conn).name %> Training Home</h1>
+    <h1><%= @conn.assigns.current_user.name %> Training Home</h1>
   </div>
 </div>
 
