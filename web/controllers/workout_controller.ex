@@ -1,13 +1,14 @@
 defmodule Trihard.WorkoutController do
   use Trihard.Web, :controller
+  require IEx
 
   alias Trihard.Workout
 
   plug :scrub_params, "workout" when action in [:create, :update]
 
   def index(conn, _params) do
-    workouts = Repo.all(Workout)
-    render(conn, "index.html", workouts: workouts)
+    user = Repo.preload conn.assigns.current_user, :workouts
+    render(conn, "index.html", workouts: user.workouts)
   end
 
   def new(conn, _params) do
@@ -16,7 +17,9 @@ defmodule Trihard.WorkoutController do
   end
 
   def create(conn, %{"workout" => workout_params}) do
-    changeset = Workout.changeset(%Workout{}, workout_params)
+    changeset = Workout.changeset(
+      %Workout{user_id: conn.assigns.current_user.id},
+      workout_params)
 
     case Repo.insert(changeset) do
       {:ok, _workout} ->
@@ -30,6 +33,11 @@ defmodule Trihard.WorkoutController do
 
   def show(conn, %{"id" => id}) do
     workout = Repo.get!(Workout, id)
+    if workout.user_id != conn.assigns.current_user.id do
+      conn
+      |> put_status(:not_found)
+      |> render(Trihard.ErrorView, "404.html")
+    end
     render(conn, "show.html", workout: workout)
   end
 

@@ -11,9 +11,10 @@ defmodule Trihard.RegistrationController do
     changeset = User.changeset(%User{}, user_params)
 
     case Trihard.Registration.create(changeset, Trihard.Repo) do
-      {:ok, changeset} ->
+      {:ok, user} ->
         conn
         |> put_flash(:info, "Your account was created")
+        |> put_session(:user_id, user.id)
         |> redirect(to: "/")
       {:error, changeset} ->
         conn

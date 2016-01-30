@@ -1,8 +1,8 @@
-<%= if @conn.assigns.current_user do %>
+<%= if @user do %>
 
 <div class="jumbotron-logged">
   <div class="container">
-    <h1><%= @conn.assigns.current_user.name %> Training Home</h1>
+    <h1><%= @user.name %> Training Home</h1>
   </div>
 </div>
 
@@ -10,34 +10,18 @@
   <div class="row">
     <div class="col-md-12">
       <h1> Log a Workout </h2>
-      <h3> Coming soon... </h3>
+
     </div>
   </div>
 
   <hr>
 
   <div class="row">
-    <div class="col-md-12"><h1>Your training</h1></div>
-    <div class="col-md-4">
-      <h2>Swimming</h2>
-      <h4>Monthly</h3>
-      <p>You've swam a total of <strong>1900m</strong> this month with an average time of <strong>24.4s</strong> per 50m. This is <strong>32%</strong> faster than last month!
-      <h4>Weekly</h3>
-      <p>You've swam a total of <strong>800m</strong> in the last week. This is <strong> 100m </strong> more than last week!</p>
-    </div>
-    <div class="col-md-4">
-      <h2>Biking</h2>
-      <h4>Monthly</h3>
-      <p>You've biked a total of <strong>1900m</strong> this month with an average time of <strong>24.4s</strong> per 50m. This is <strong>32%</strong> faster than last month!
-      <h4>Weekly</h3>
-      <p>You've biked a total of <strong>800m</strong> in the last week. This is <strong> 100m </strong> more than last week!</p>
-   </div>
-    <div class="col-md-4">
-      <h2>Running</h2>
-      <h4>Monthly</h3>
-      <p>You've ran a total of <strong>1900m</strong> this month with an average time of <strong>24.4s</strong> per 50m. This is <strong>32%</strong> faster than last month!
-      <h4>Weekly</h3>
-      <p>You've ran a total of <strong>800m</strong> in the last week. This is <strong> 100m </strong> more than last week!</p>
+    <div class="col-md-12">
+      <h1>Your training</h1>
+      <%= for workout <- @user.workouts do %>
+        <%= link workout.name, to: workout_path(@conn, :show, workout) %>
+      <% end %>
     </div>
   </div>
 </div>
