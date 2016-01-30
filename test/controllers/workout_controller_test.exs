@@ -1,9 +1,21 @@
 defmodule Trihard.WorkoutControllerTest do
   use Trihard.ConnCase
-
   alias Trihard.Workout
-  @valid_attrs %{date: "2010-04-17", name: "some content", user_id: 42}
+  alias Trihard.User
+  require IEx
+
+  @user_attrs %{id: 123456, name: "lcp", email: "abc@gmail.com", password: "password"}
+  @valid_attrs %{date: {2012, 1, 1}, name: "some content"}
   @invalid_attrs %{}
+
+  setup do
+    changeset = User.changeset %User{}, @user_attrs
+    {:ok, user} = Trihard.Registration.create changeset, Repo
+    conn = conn()
+    |> post("/login", %{session: %{email: "abc@gmail.com", password: "password"}})
+
+    {:ok, conn: conn, user: user}
+  end
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, workout_path(conn, :index)
@@ -44,8 +56,8 @@ defmodule Trihard.WorkoutControllerTest do
     assert html_response(conn, 200) =~ "Edit workout"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    workout = Repo.insert! %Workout{}
+  test "updates chosen resource and redirects when data is valid", %{conn: conn, user: user} do
+    workout = Repo.insert! %Workout{user_id: user.id}
     conn = put conn, workout_path(conn, :update, workout), workout: @valid_attrs
     assert redirected_to(conn) == workout_path(conn, :show, workout)
     assert Repo.get_by(Workout, @valid_attrs)
