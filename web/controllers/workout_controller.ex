@@ -12,7 +12,7 @@ defmodule Trihard.WorkoutController do
   end
 
   def new(conn, _params) do
-    changeset = Workout.changeset(%Workout{})
+    changeset = Workout.changeset(%Workout{ date: Ecto.Date.utc })
     render(conn, "new.html", changeset: changeset)
   end
 
