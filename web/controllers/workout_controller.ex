@@ -12,11 +12,12 @@ defmodule Trihard.WorkoutController do
   end
 
   def user_workouts(user) do
-    assoc(user, :workout)
+    assoc(user, :workouts)
   end
 
   def index(conn, _params, user) do
-    render(conn, "index.html", workouts: user_workouts(user))
+    workouts = user |> user_workouts |> Repo.all
+    render(conn, "index.html", workouts: workouts)
   end
 
   def new(conn, _params, user) do

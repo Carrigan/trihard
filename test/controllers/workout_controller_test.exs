@@ -8,13 +8,17 @@ defmodule Trihard.WorkoutControllerTest do
   @valid_attrs %{date: {2012, 1, 1}, name: "some content"}
   @invalid_attrs %{}
 
-  setup do
-    changeset = User.changeset %User{}, @user_attrs
-    {:ok, user} = Trihard.Registration.create changeset, Repo
-    conn = conn()
-    |> post("/login", %{session: %{email: "abc@gmail.com", password: "password"}})
+  setup %{conn: conn} = config do
+    user = User.changeset(%User{}, @user_attrs) |> Repo.insert!
+    conn = assign(conn, :current_user, user)
+    base_params = {:ok, conn: conn, user: user}
 
-    {:ok, conn: conn, user: user}
+    if config[:with_workout] do
+      workout = user |> build_assoc(:workouts) |> Repo.insert!
+      {:ok, conn: conn, user: user, workout: workout}
+    else
+      {:ok, conn: conn, user: user}
+    end
   end
 
   test "lists all entries on index", %{conn: conn} do
@@ -38,8 +42,8 @@ defmodule Trihard.WorkoutControllerTest do
     assert html_response(conn, 200) =~ "New workout"
   end
 
-  test "shows chosen resource", %{conn: conn} do
-    workout = Repo.insert! %Workout{}
+  @tag with_workout: true
+  test "shows chosen resource", %{conn: conn, workout: workout} do
     conn = get conn, workout_path(conn, :show, workout)
     assert html_response(conn, 200) =~ "Show workout"
   end
@@ -50,27 +54,27 @@ defmodule Trihard.WorkoutControllerTest do
     end
   end
 
-  test "renders form for editing chosen resource", %{conn: conn} do
-    workout = Repo.insert! %Workout{}
+  @tag with_workout: true
+  test "renders form for editing chosen resource", %{conn: conn, workout: workout} do
     conn = get conn, workout_path(conn, :edit, workout)
     assert html_response(conn, 200) =~ "Edit workout"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn, user: user} do
-    workout = Repo.insert! %Workout{user_id: user.id}
+  @tag with_workout: true
+  test "updates chosen resource and redirects when data is valid", %{conn: conn, workout: workout} do
     conn = put conn, workout_path(conn, :update, workout), workout: @valid_attrs
     assert redirected_to(conn) == workout_path(conn, :show, workout)
     assert Repo.get_by(Workout, @valid_attrs)
   end
 
-  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    workout = Repo.insert! %Workout{}
+  @tag with_workout: true
+  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn, workout: workout} do
     conn = put conn, workout_path(conn, :update, workout), workout: @invalid_attrs
     assert html_response(conn, 200) =~ "Edit workout"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
-    workout = Repo.insert! %Workout{}
+  @tag with_workout: true
+  test "deletes chosen resource", %{conn: conn, workout: workout} do
     conn = delete conn, workout_path(conn, :delete, workout)
     assert redirected_to(conn) == workout_path(conn, :index)
     refute Repo.get(Workout, workout.id)
