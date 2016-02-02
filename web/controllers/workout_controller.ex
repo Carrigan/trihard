@@ -6,20 +6,28 @@ defmodule Trihard.WorkoutController do
 
   plug :scrub_params, "workout" when action in [:create, :update]
 
-  def index(conn, _params) do
-    user = Repo.preload conn.assigns.current_user, :workouts
-    render(conn, "index.html", workouts: user.workouts)
+  def action(conn, _) do
+    apply(__MODULE__, action_name(conn),
+      [conn, conn.params, conn.assigns.current_user])
   end
 
-  def new(conn, _params) do
-    changeset = Workout.changeset(%Workout{ date: Ecto.Date.utc })
+  def user_workouts(user) do
+    assoc(user, :workout)
+  end
+
+  def index(conn, _params, user) do
+    render(conn, "index.html", workouts: user_workouts(user))
+  end
+
+  def new(conn, _params, user) do
+    changeset = Workout.changeset(%Workout{date: Ecto.Date.utc})
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"workout" => workout_params}) do
-    changeset = Workout.changeset(
-      %Workout{user_id: conn.assigns.current_user.id},
-      workout_params)
+  def create(conn, %{"workout" => workout_params}, user) do
+    changeset = user
+      |> build_assoc(:workouts)
+      |> Workout.changeset(workout_params)
 
     case Repo.insert(changeset) do
       {:ok, _workout} ->
@@ -31,24 +39,19 @@ defmodule Trihard.WorkoutController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    workout = Repo.get!(Workout, id)
-    if workout.user_id != conn.assigns.current_user.id do
-      conn
-      |> put_status(:not_found)
-      |> render(Trihard.ErrorView, "404.html")
-    end
+  def show(conn, %{"id" => id}, user) do
+    workout = user |> user_workouts |> Repo.get!(id)
     render(conn, "show.html", workout: workout)
   end
 
-  def edit(conn, %{"id" => id}) do
-    workout = Repo.get!(Workout, id)
+  def edit(conn, %{"id" => id}, user) do
+    workout = Repo.get!(user_workouts(user), id)
     changeset = Workout.changeset(workout)
     render(conn, "edit.html", workout: workout, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "workout" => workout_params}) do
-    workout = Repo.get!(Workout, id)
+  def update(conn, %{"id" => id, "workout" => workout_params}, user) do
+    workout = user |> user_workouts |> Repo.get!(id)
     changeset = Workout.changeset(workout, workout_params)
 
     case Repo.update(changeset) do
@@ -61,11 +64,8 @@ defmodule Trihard.WorkoutController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    workout = Repo.get!(Workout, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
+  def delete(conn, %{"id" => id}, user) do
+    workout = user |> user_workouts |> Repo.get!(id)
     Repo.delete!(workout)
 
     conn
