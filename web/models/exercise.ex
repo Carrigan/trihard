@@ -1,16 +1,17 @@
-defmodule Trihard.Workout do
+defmodule Trihard.Exercise do
   use Trihard.Web, :model
 
-  schema "workouts" do
-    field :date, Ecto.Date
-    field :name, :string
-    belongs_to :user, Trihard.User
-    has_many :exercises, Trihard.Exercise
+  schema "exercises" do
+    field :type, :string
+    field :distance, :float
+    field :seconds, :integer
+    belongs_to :workout, Trihard.Workout
+
     timestamps
   end
 
-  @required_fields ~w(date name user_id)
-  @optional_fields ~w(exercises)
+  @required_fields ~w(type workout_id)
+  @optional_fields ~w(distance seconds)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
