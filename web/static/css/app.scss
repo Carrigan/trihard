@@ -22,17 +22,29 @@ form.link, form.button {
   display: inline;
 }
 
+
 /* Custom page header */
-.header {
-  height: 50px;
-  background: #0D181E;
-  color: #FDFDFD;
+.header-grey {
+  background: #DDDDDD;
+  color: #111111;
 }
 
 .header a {
   color: #FDFDFD;
 }
 
+.navbar-colored {
+  background: #34495E;
+}
+
+.navbar-colored a {
+  color: #FDFDFD;
+}
+
+.thick-text {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,

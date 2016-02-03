@@ -13,7 +13,7 @@
 
   <body>
 
-    <header class="header">
+    <header class="navbar-colored navbar-inverse">
       <div class="container">
         <nav role="navigation">
           <a class="navbar-brand">TriHard</a>

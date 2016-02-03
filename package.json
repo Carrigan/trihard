@@ -9,6 +9,7 @@
     "javascript-brunch": ">= 1.0 < 1.8",
     "uglify-js-brunch": ">= 1.0 < 1.8",
     "phoenix": "file:deps/phoenix",
+    "sass-brunch": "^1.8.10",
     "phoenix_html": "file:deps/phoenix_html"
   }
 }

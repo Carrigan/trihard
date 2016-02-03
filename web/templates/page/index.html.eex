@@ -1,8 +1,8 @@
 <%= if @user do %>
 
-<div class="jumbotron-logged">
+<div class="section header-grey">
   <div class="container">
-    <h1><%= @user.name %> Training Home</h1>
+    <h1 class="thick-text"><%= @user.name %>'s Training Home</h1>
   </div>
 </div>
 
@@ -29,10 +29,14 @@
 
 <%= else %>
 
-<div class="jumbotron">
+<div class="section header-grey">
   <div class="container">
-    <h1>TriHard</h1>
-    <p>Stupid Simple Triathlon Training</p>
+    <div class="col-md-6">
+      <h1>Training, Simplified.</h1>
+      <p>Stupid Simple Triathlon Training</p>
+    </div>
+    <div class="col-md-6">
+    </div>
   </div>
 </div>
 
