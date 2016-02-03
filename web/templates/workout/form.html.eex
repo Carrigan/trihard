@@ -17,6 +17,26 @@
     <%= error_tag f, :name %>
   </div>
 
+  <%= inputs_for f, :exercises, fn fe -> %>
+    <div class="form-group">
+      <%= label fe, :type, class: "control-label" %>
+      <%= text_input fe, :type, class: "form-control" %>
+      <%= error_tag fe, :type %>
+    </div>
+
+    <div class="form-group">
+      <%= label fe, :distance, class: "control-label" %>
+      <%= text_input fe, :distance, class: "form-control" %>
+      <%= error_tag fe, :distance %>
+    </div>
+
+    <div class="form-group">
+      <%= label fe, :seconds, class: "control-label" %>
+      <%= text_input fe, :seconds, class: "form-control" %>
+      <%= error_tag fe, :seconds %>
+    </div>
+  <% end %>
+
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>

@@ -10,7 +10,7 @@ defmodule Trihard.Workout do
   end
 
   @required_fields ~w(date name user_id)
-  @optional_fields ~w(exercises)
+  @optional_fields ~w()
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -21,5 +21,6 @@ defmodule Trihard.Workout do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> cast_assoc(:exercises, required: true)
   end
 end

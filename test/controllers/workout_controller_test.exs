@@ -11,7 +11,6 @@ defmodule Trihard.WorkoutControllerTest do
   setup %{conn: conn} = config do
     user = User.changeset(%User{}, @user_attrs) |> Repo.insert!
     conn = assign(conn, :current_user, user)
-    base_params = {:ok, conn: conn, user: user}
 
     if config[:with_workout] do
       workout = user |> build_assoc(:workouts) |> Repo.insert!

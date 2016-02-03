@@ -10,7 +10,7 @@ defmodule Trihard.Exercise do
     timestamps
   end
 
-  @required_fields ~w(type workout_id)
+  @required_fields ~w(type)
   @optional_fields ~w(distance seconds)
 
   @doc """

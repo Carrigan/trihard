@@ -20,8 +20,13 @@ defmodule Trihard.WorkoutController do
     render(conn, "index.html", workouts: workouts)
   end
 
-  def new(conn, _params, user) do
-    changeset = Workout.changeset(%Workout{date: Ecto.Date.utc})
+  def new(conn, _params, _user) do
+    changeset = Workout.changeset(
+      %Workout{
+        date: Ecto.Date.utc,
+        exercises: [%Trihard.Exercise{type: "swim"},
+                    %Trihard.Exercise{type: "bike"},
+                    %Trihard.Exercise{type: "run"}]})
     render(conn, "new.html", changeset: changeset)
   end
 
@@ -41,18 +46,18 @@ defmodule Trihard.WorkoutController do
   end
 
   def show(conn, %{"id" => id}, user) do
-    workout = user |> user_workouts |> Repo.get!(id)
+    workout = user |> user_workouts |> Repo.get!(id) |> Repo.preload(:exercises)
     render(conn, "show.html", workout: workout)
   end
 
   def edit(conn, %{"id" => id}, user) do
-    workout = Repo.get!(user_workouts(user), id)
+    workout = Repo.get!(user_workouts(user), id) |> Repo.preload(:exercises)
     changeset = Workout.changeset(workout)
     render(conn, "edit.html", workout: workout, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "workout" => workout_params}, user) do
-    workout = user |> user_workouts |> Repo.get!(id)
+    workout = user |> user_workouts |> Repo.get!(id) |> Repo.preload(:exercises)
     changeset = Workout.changeset(workout, workout_params)
 
     case Repo.update(changeset) do
