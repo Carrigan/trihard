@@ -29,8 +29,17 @@ form.link, form.button {
   color: #111111;
 }
 
+.header-lightblue {
+  background: #E4F1FE;
+}
+
 .header a {
   color: #FDFDFD;
+}
+
+.header-themeblue {
+  background: #34495E;
+  color: #EEE;
 }
 
 .navbar-colored {
@@ -41,9 +50,18 @@ form.link, form.button {
   color: #FDFDFD;
 }
 
-.thick-text {
-  padding-top: 10px;
-  padding-bottom: 10px;
+.thick {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.thicker {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.img-padded {
+  margin: 10px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -67,15 +85,6 @@ form.link, form.button {
   padding-top: 10px;
   padding-bottom: 10px;
   background: #0D181E;
-  color: #FDFDFD;
-}
-
-/* Main marketing message */
-.jumbotron {
-  text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-  background-image: url("/images/header.png");
-  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("/images/header.png");
   color: #FDFDFD;
 }
 

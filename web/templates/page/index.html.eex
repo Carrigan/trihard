@@ -2,7 +2,7 @@
 
 <div class="section header-grey">
   <div class="container">
-    <h1 class="thick-text"><%= @user.name %>'s Training Home</h1>
+    <h1 class="thicker"><%= @user.name %>'s Training Home</h1>
   </div>
 </div>
 
@@ -29,13 +29,43 @@
 
 <%= else %>
 
-<div class="section header-grey">
+<div class="section header-themeblue">
+  <div class="container">
+    <div class="jumbotron header-themeblue">
+      <h1>Welcome to Trihard</h1>
+      <p>Stupid simple triathlon training.</p>
+      <div class="thicker">
+        <div class="col-sm-4 col-sm-offset-1">
+          <a href="<%= registration_path(@conn, :new) %>" class="btn btn-default btn-block">Sign Up</a>
+        </div>
+        <div class="col-sm-4 col-sm-offset-1">
+          <a href="<%= session_path(@conn, :new) %>" class="btn btn-default btn-block">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section thicker">
   <div class="container">
     <div class="col-md-6">
-      <h1>Training, Simplified.</h1>
-      <p>Stupid Simple Triathlon Training</p>
+      <h2>Log Your Workouts</h2>
+      <p>Most workout sites try to do way too much. If you are training for a triathlon and simply want a place to track your mileage and times, welcome home. We keep you focused by only tracking running, swimming, and biking. Although not tracked, you can also log other activities during a workout as plain text. If you are not happy with our service for any reason, you can download all of your data as a CSV and take it elsewhere.</p>
     </div>
     <div class="col-md-6">
+      <img src="/images/running.jpg" class="img-padded img-rounded img-responsive">
+    </div>
+  </div>
+</div>
+
+<div class="section thicker header-grey">
+  <div class="container">
+    <div class="col-md-6">
+      <img src="/images/swimming.jpeg" class="img-padded img-rounded img-responsive">
+    </div>
+    <div class="col-md-6">
+      <h2>Get Great Stats</h2>
+      <p>Trihard makes it easy to track your improvement over time. You can compare your distance and times with how you were during last week or last month. Named workouts even let you compare individual workouts with the last time you did them.</p>
     </div>
   </div>
 </div>
