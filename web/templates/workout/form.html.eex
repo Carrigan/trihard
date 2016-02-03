@@ -18,11 +18,10 @@
   </div>
 
   <%= inputs_for f, :exercises, fn fe -> %>
-    <div class="form-group">
-      <%= label fe, :type, class: "control-label" %>
-      <%= text_input fe, :type, class: "form-control" %>
-      <%= error_tag fe, :type %>
-    </div>
+    <hr>
+    <h3><%= field_value(fe, :type) |> String.capitalize() %></h3>
+    <%= hidden_input fe, :type %>
+    <%= error_tag fe, :type %>
 
     <div class="form-group">
       <%= label fe, :distance, class: "control-label" %>
@@ -36,7 +35,7 @@
       <%= error_tag fe, :seconds %>
     </div>
   <% end %>
-
+  <hr>
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
