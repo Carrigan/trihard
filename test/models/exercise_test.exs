@@ -3,7 +3,7 @@ defmodule Trihard.ExerciseTest do
 
   alias Trihard.Exercise
 
-  @valid_attrs %{distance: "120.5", seconds: 42, type: "some content"}
+  @valid_attrs %{distance: "120.5", seconds: 42, type: "some content", present: true}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

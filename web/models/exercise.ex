@@ -1,16 +1,18 @@
 defmodule Trihard.Exercise do
   use Trihard.Web, :model
+  require IEx
 
   schema "exercises" do
     field :type, :string
     field :distance, :float
     field :seconds, :integer
     belongs_to :workout, Trihard.Workout
+    field :present, :boolean, virtual: true
 
     timestamps
   end
 
-  @required_fields ~w(type)
+  @required_fields ~w(type present)
   @optional_fields ~w(distance seconds)
 
   @doc """

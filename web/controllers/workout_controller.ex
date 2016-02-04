@@ -3,6 +3,7 @@ defmodule Trihard.WorkoutController do
   require IEx
 
   alias Trihard.Workout
+  alias Trihard.Exercise
 
   plug :scrub_params, "workout" when action in [:create, :update]
 
@@ -30,12 +31,18 @@ defmodule Trihard.WorkoutController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"workout" => workout_params}, user) do
-    changeset = user
-      |> build_assoc(:workouts)
-      |> Workout.changeset(workout_params)
+  def create(conn, %{"workout" => params}, user) do
+    { exercise_params, workout_params } = Map.split(params, ["exercises"])
+    exercise_params = Map.get(exercise_params, "exercises")
 
-    case Repo.insert(changeset) do
+    exercises = Enum.map(exercise_params, fn {_idx, str} -> Exercise.changeset(%Exercise{}, str) end)
+      |> Enum.filter(&(Ecto.Changeset.get_change(&1, :present) == true))
+
+    workout = user
+      |> build_assoc(:workouts)
+      |> Workout.with_exercises(exercises, workout_params)
+
+    case Repo.insert(workout) do
       {:ok, _workout} ->
         conn
         |> put_flash(:info, "Workout created successfully.")

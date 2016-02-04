@@ -23,6 +23,10 @@
     <%= hidden_input fe, :type %>
     <%= error_tag fe, :type %>
 
+    <div class="checkbox">
+      <label><%= checkbox fe, :present %> Present</label>
+    </div>
+
     <div class="form-group">
       <%= label fe, :distance, class: "control-label" %>
       <%= text_input fe, :distance, class: "form-control" %>

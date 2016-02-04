@@ -1,5 +1,6 @@
 defmodule Trihard.Workout do
   use Trihard.Web, :model
+  require IEx
 
   schema "workouts" do
     field :date, Ecto.Date
@@ -21,6 +22,18 @@ defmodule Trihard.Workout do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
-    |> cast_assoc(:exercises, required: true)
+  end
+
+  def with_exercises(model, exercises, params) do
+    model
+    |> changeset(params)
+    |> append_exercises(exercises)
+  end
+
+  defp append_exercises(changeset, exercises) do
+    cond do
+      Enum.empty? exercises -> add_error(changeset, :exercises, "At least one exercise is required.")
+      true -> put_assoc(changeset, :exercises, exercises)
+    end
   end
 end
