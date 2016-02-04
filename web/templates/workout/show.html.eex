@@ -17,6 +17,19 @@
     <%= @workout.user_id %>
   </li>
 
+  <li>
+    <strong>Exercises:</strong>
+    <ul>
+      <%= for workout <- @workout.exercises do %>
+        <li><%= workout.type %></li>
+        <ul>
+          <li>Distance: <%= workout.distance %></li>
+          <li>Time: <%= workout.seconds %></li>
+        </ul>
+      <% end %>
+    </ul>
+  </li>
+
 </ul>
 
 <%= link "Edit", to: workout_path(@conn, :edit, @workout) %>
