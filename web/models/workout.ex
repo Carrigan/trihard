@@ -34,7 +34,6 @@ defmodule Trihard.Workout do
     |> append_exercises(exercises)
   end
 
-  defp cast_exercises(params) when map_size(params) == 0, do: []
   defp cast_exercises(params) do
     params
     |> Enum.map(fn {_idx, str} -> Exercise.changeset(%Exercise{}, str) end)
