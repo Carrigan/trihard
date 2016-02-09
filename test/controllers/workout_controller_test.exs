@@ -4,16 +4,23 @@ defmodule Trihard.WorkoutControllerTest do
   alias Trihard.User
   require IEx
 
-  @user_attrs %{id: 123456, name: "lcp", email: "abc@gmail.com", password: "password"}
-  @valid_attrs %{date: {2012, 1, 1}, name: "some content"}
-  @invalid_attrs %{}
+  @user_attrs %{name: "lcp", email: "abc@gmail.com", password: "password"}
+  @swim_attrs %{type: "swim", present: true}
+  @bike_attrs %{type: "bike", present: false}
+  @valid_attrs %{date: {2012, 1, 1}, name: "some content",
+    exercises: %{ 0 => @swim_attrs, 1 => @bike_attrs }}
+  @invalid_attrs %{name: 10}
 
   setup %{conn: conn} = config do
     user = User.changeset(%User{}, @user_attrs) |> Repo.insert!
     conn = assign(conn, :current_user, user)
 
     if config[:with_workout] do
-      workout = user |> build_assoc(:workouts) |> Repo.insert!
+      workout = user
+        |> build_assoc(:workouts)
+        |> Workout.with_exercises(@valid_attrs)
+        |> Repo.insert!
+
       {:ok, conn: conn, user: user, workout: workout}
     else
       {:ok, conn: conn, user: user}
@@ -33,7 +40,7 @@ defmodule Trihard.WorkoutControllerTest do
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = post conn, workout_path(conn, :create), workout: @valid_attrs
     assert redirected_to(conn) == workout_path(conn, :index)
-    assert Repo.get_by(Workout, @valid_attrs)
+    assert Repo.one(from x in Workout, order_by: [desc: x.id], limit: 1)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -63,7 +70,7 @@ defmodule Trihard.WorkoutControllerTest do
   test "updates chosen resource and redirects when data is valid", %{conn: conn, workout: workout} do
     conn = put conn, workout_path(conn, :update, workout), workout: @valid_attrs
     assert redirected_to(conn) == workout_path(conn, :show, workout)
-    assert Repo.get_by(Workout, @valid_attrs)
+    assert Repo.get(Workout, workout.id)
   end
 
   @tag with_workout: true

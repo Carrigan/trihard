@@ -1,39 +1,46 @@
 defmodule Trihard.Workout do
   use Trihard.Web, :model
-  require IEx
+  alias Trihard.Exercise
 
   schema "workouts" do
     field :date, Ecto.Date
     field :name, :string
     belongs_to :user, Trihard.User
-    has_many :exercises, Trihard.Exercise
+    has_many :exercises, Trihard.Exercise, on_delete: :delete_all
     timestamps
   end
 
   @required_fields ~w(date name user_id)
   @optional_fields ~w()
 
-  @doc """
-  Creates a changeset based on the `model` and `params`.
-
-  If no params are provided, an invalid changeset is returned
-  with no validation performed.
-  """
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
 
-  def with_exercises(model, exercises, params) do
+  def with_exercises(model, %{"exercises" => _} = params), do: with_exercises(model, params, "exercises")
+  def with_exercises(model, %{:exercises => _} = params), do: with_exercises(model, params, :exercises)
+  def with_exercises(model, _) do
+    change(model)
+    |> add_error(:exercises, "required")
+  end
+
+  def with_exercises(model, params, key) do
+    { exercise_params, workout_params } = Map.split(params, [key])
+    exercises = Map.get(exercise_params, key) |> cast_exercises()
+
     model
-    |> changeset(params)
+    |> changeset(workout_params)
     |> append_exercises(exercises)
   end
 
-  defp append_exercises(changeset, exercises) do
-    cond do
-      Enum.empty? exercises -> add_error(changeset, :exercises, "At least one exercise is required.")
-      true -> put_assoc(changeset, :exercises, exercises)
-    end
+  defp cast_exercises(params) when map_size(params) == 0, do: []
+  defp cast_exercises(params) do
+    params
+    |> Enum.map(fn {_idx, str} -> Exercise.changeset(%Exercise{}, str) end)
+    |> Enum.filter(&(&1.valid?))
   end
+
+  defp append_exercises(changeset, []), do: add_error(changeset, :exercises, "required")
+  defp append_exercises(changeset, exercises), do: put_assoc(changeset, :exercises, exercises)
 end

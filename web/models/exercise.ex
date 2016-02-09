@@ -24,5 +24,14 @@ defmodule Trihard.Exercise do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> verify_is_present
+  end
+
+  defp verify_is_present(changeset) do
+    if get_change(changeset, :present) do
+      changeset
+    else
+      add_error(changeset, :present, "Present must be true")
+    end
   end
 end
