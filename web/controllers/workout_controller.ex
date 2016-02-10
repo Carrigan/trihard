@@ -1,7 +1,6 @@
 defmodule Trihard.WorkoutController do
   use Trihard.Web, :controller
-  require IEx
-
+  alias Trihard.Exercise
   alias Trihard.Workout
 
   plug :scrub_params, "workout" when action in [:create, :update]
@@ -21,12 +20,9 @@ defmodule Trihard.WorkoutController do
   end
 
   def new(conn, _params, _user) do
-    changeset = Workout.changeset(
-      %Workout{
-        date: Ecto.Date.utc,
-        exercises: [%Trihard.Exercise{type: "swim"},
-                    %Trihard.Exercise{type: "bike"},
-                    %Trihard.Exercise{type: "run"}]})
+    changeset = Workout.changeset(%Workout{
+      date: Ecto.Date.utc,
+      exercises: Enum.map(~w(swim bike run), &(%Exercise{type: &1}))})
     render(conn, "new.html", changeset: changeset)
   end
 
@@ -52,7 +48,7 @@ defmodule Trihard.WorkoutController do
 
   def edit(conn, %{"id" => id}, user) do
     workout = Repo.get!(user_workouts(user), id) |> Repo.preload(:exercises)
-    changeset = Workout.changeset(workout)
+    changeset = Workout.with_fill(workout)
     render(conn, "edit.html", workout: workout, changeset: changeset)
   end
 
