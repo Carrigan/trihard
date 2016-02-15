@@ -14,7 +14,7 @@
   <%= for workout <- @workouts do %>
       <tr>
         <td><%= workout.date %></td>
-        <td><%= workout.name %></td>
+        <td><%= Trihard.Workout.name(workout) %></td>
 
         <td class="text-right">
           <%= link "Show", to: workout_path(@conn, :show, workout), class: "btn btn-default btn-xs" %>

@@ -37,12 +37,12 @@ defmodule Trihard.WorkoutController do
   end
 
   def show(conn, %{"id" => id}, user) do
-    workout = user |> user_workouts |> Repo.get!(id)
+    workout = user |> user_workouts |> Repo.get!(id) |> Workout.with_minutes
     render(conn, "show.html", workout: workout)
   end
 
   def edit(conn, %{"id" => id}, user) do
-    workout = Repo.get!(user_workouts(user), id)
+    workout = Repo.get!(user_workouts(user), id) |> Workout.with_minutes
     changeset = Workout.changeset(workout)
     render(conn, "edit.html", workout: workout, changeset: changeset)
   end

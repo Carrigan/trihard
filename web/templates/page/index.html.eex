@@ -19,9 +19,11 @@
   <div class="row">
     <div class="col-md-12">
       <h1>Your training</h1>
+      <ul>
       <%= for workout <- @user.workouts do %>
-        <%= link workout.name, to: workout_path(@conn, :show, workout) %>
+        <li><%= link Trihard.Workout.name(workout), to: workout_path(@conn, :show, workout) %></li>
       <% end %>
+    </ul>
     </div>
   </div>
 </div>

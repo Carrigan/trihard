@@ -26,10 +26,17 @@
         <%= error_tag f, :swim_distance %>
       </div>
 
-      <div class="form-group">
-        <%= label f, :swim_seconds, class: "control-label" %>
-        <%= text_input f, :swim_seconds, class: "form-control" %>
-        <%= error_tag f, :swim_seconds %>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <%= label f, :swim_minutes, class: "control-label" %>
+          <%= text_input f, :swim_minutes, class: "form-control" %>
+          <%= error_tag f, :swim_minutes %>
+        </div>
+        <div class="form-group col-md-6">
+          <%= label f, :swim_seconds, class: "control-label" %>
+          <%= text_input f, :swim_seconds, class: "form-control" %>
+          <%= error_tag f, :swim_seconds %>
+        </div>
       </div>
     </div>
 
@@ -41,10 +48,17 @@
         <%= error_tag f, :bike_distance %>
       </div>
 
-      <div class="form-group">
-        <%= label f, :bike_seconds, class: "control-label" %>
-        <%= text_input f, :bike_seconds, class: "form-control" %>
-        <%= error_tag f, :bike_seconds %>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <%= label f, :bike_minutes, class: "control-label" %>
+          <%= text_input f, :bike_minutes, class: "form-control" %>
+          <%= error_tag f, :bike_minutes %>
+        </div>
+        <div class="form-group col-md-6">
+          <%= label f, :bike_seconds, class: "control-label" %>
+          <%= text_input f, :bike_seconds, class: "form-control" %>
+          <%= error_tag f, :bike_seconds %>
+        </div>
       </div>
     </div>
 
@@ -56,10 +70,17 @@
         <%= error_tag f, :run_distance %>
       </div>
 
-      <div class="form-group">
-        <%= label f, :run_seconds, class: "control-label" %>
-        <%= text_input f, :run_seconds, class: "form-control" %>
-        <%= error_tag f, :run_seconds %>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <%= label f, :run_minutes, class: "control-label" %>
+          <%= text_input f, :run_minutes, class: "form-control" %>
+          <%= error_tag f, :run_minutes %>
+        </div>
+        <div class="form-group col-md-6">
+          <%= label f, :run_seconds, class: "control-label" %>
+          <%= text_input f, :run_seconds, class: "form-control" %>
+          <%= error_tag f, :run_seconds %>
+        </div>
       </div>
     </div>
   </div>
