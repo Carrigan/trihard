@@ -1,8 +1,7 @@
 <div class="container">
   <h2>New workout</h2>
+  <hr>
 
   <%= render "form.html", changeset: @changeset,
                         action: workout_path(@conn, :create) %>
-
-  <%= link "Back", to: workout_path(@conn, :index) %>
 </div>

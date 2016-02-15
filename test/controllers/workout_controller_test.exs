@@ -26,7 +26,7 @@ defmodule Trihard.WorkoutControllerTest do
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, workout_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing workouts"
+    assert html_response(conn, 200) =~ "Your Workouts"
   end
 
   test "renders form for new resources", %{conn: conn} do

@@ -11,7 +11,7 @@ defmodule Trihard.SessionController do
         conn
         |> put_session(:user_id, user.id)
         |> put_flash(:info, "Logged in")
-        |> redirect(to: "/")
+        |> redirect(to: "/workouts")
       :error ->
         conn
         |> put_flash(:info, "Wrong email or password")

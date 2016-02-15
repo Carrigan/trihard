@@ -14,6 +14,10 @@ body, form, ul, table {
   padding-top: 6px;
 }
 
+.large-link {
+  font-size: 2em;
+}
+
 /* Phoenix flash messages */
 .alert:empty { display: none; }
 
