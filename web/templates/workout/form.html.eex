@@ -27,9 +27,9 @@
       </div>
 
       <div class="form-group">
-        <%= label f, :swim_time, class: "control-label" %>
-        <%= text_input f, :swim_time, class: "form-control" %>
-        <%= error_tag f, :swim_time %>
+        <%= label f, :swim_seconds, class: "control-label" %>
+        <%= text_input f, :swim_seconds, class: "form-control" %>
+        <%= error_tag f, :swim_seconds %>
       </div>
     </div>
 
@@ -42,9 +42,9 @@
       </div>
 
       <div class="form-group">
-        <%= label f, :bike_time, class: "control-label" %>
-        <%= text_input f, :bike_time, class: "form-control" %>
-        <%= error_tag f, :bike_time %>
+        <%= label f, :bike_seconds, class: "control-label" %>
+        <%= text_input f, :bike_seconds, class: "form-control" %>
+        <%= error_tag f, :bike_seconds %>
       </div>
     </div>
 
@@ -57,9 +57,9 @@
       </div>
 
       <div class="form-group">
-        <%= label f, :run_time, class: "control-label" %>
-        <%= text_input f, :run_time, class: "form-control" %>
-        <%= error_tag f, :run_time %>
+        <%= label f, :run_seconds, class: "control-label" %>
+        <%= text_input f, :run_seconds, class: "form-control" %>
+        <%= error_tag f, :run_seconds %>
       </div>
     </div>
   </div>
