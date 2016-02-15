@@ -2,14 +2,10 @@ defmodule Trihard.WorkoutControllerTest do
   use Trihard.ConnCase
   alias Trihard.Workout
   alias Trihard.User
-  require IEx
 
   @user_attrs %{name: "lcp", email: "abc@gmail.com", password: "password"}
-  @swim_attrs %{type: "swim", present: true}
-  @bike_attrs %{type: "bike", present: false}
-  @valid_attrs %{date: {2012, 1, 1}, name: "some content",
-    exercises: %{ 0 => @swim_attrs, 1 => @bike_attrs }}
-  @invalid_attrs %{name: 10}
+  @valid_attrs %{date: {2012, 1, 1}, name: "some content"}
+  @invalid_attrs %{ name: 10 }
 
   setup %{conn: conn} = config do
     user = User.changeset(%User{}, @user_attrs) |> Repo.insert!
@@ -18,7 +14,7 @@ defmodule Trihard.WorkoutControllerTest do
     if config[:with_workout] do
       workout = user
         |> build_assoc(:workouts)
-        |> Workout.with_exercises(@valid_attrs)
+        |> Workout.changeset(@valid_attrs)
         |> Repo.insert!
 
       {:ok, conn: conn, user: user, workout: workout}

@@ -1,6 +1,5 @@
 defmodule Trihard.WorkoutController do
   use Trihard.Web, :controller
-  alias Trihard.Exercise
   alias Trihard.Workout
 
   plug :scrub_params, "workout" when action in [:create, :update]
@@ -20,16 +19,12 @@ defmodule Trihard.WorkoutController do
   end
 
   def new(conn, _params, _user) do
-    changeset = Workout.changeset(%Workout{
-      date: Ecto.Date.utc,
-      exercises: Enum.map(~w(swim bike run), &(%Exercise{type: &1}))})
+    changeset = Workout.changeset(%Workout{date: Ecto.Date.utc})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"workout" => params}, user) do
-    workout = user
-      |> build_assoc(:workouts)
-      |> Workout.with_exercises(params)
+    workout = user |> build_assoc(:workouts) |> Workout.changeset(params)
 
     case Repo.insert(workout) do
       {:ok, _workout} ->
@@ -42,33 +37,37 @@ defmodule Trihard.WorkoutController do
   end
 
   def show(conn, %{"id" => id}, user) do
-    workout = user |> user_workouts |> Repo.get!(id) |> Repo.preload(:exercises)
+    workout = user |> user_workouts |> Repo.get!(id)
     render(conn, "show.html", workout: workout)
   end
 
   def edit(conn, %{"id" => id}, user) do
-    workout = Repo.get!(user_workouts(user), id) |> Repo.preload(:exercises)
-    changeset = Workout.with_fill(workout)
+    workout = Repo.get!(user_workouts(user), id)
+    changeset = Workout.changeset(workout)
     render(conn, "edit.html", workout: workout, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "workout" => workout_params}, user) do
-    workout = user |> user_workouts |> Repo.get!(id) |> Repo.preload(:exercises)
-    changeset = Workout.changeset(workout, workout_params)
+    workout = user |> user_workouts |> Repo.get!(id)
 
-    case Repo.update(changeset) do
-      {:ok, workout} ->
-        conn
-        |> put_flash(:info, "Workout updated successfully.")
-        |> redirect(to: workout_path(conn, :show, workout))
-      {:error, changeset} ->
-        render(conn, "edit.html", workout: workout, changeset: changeset)
-    end
+    workout
+    |> Workout.changeset(workout_params)
+    |> Repo.update
+    |> render_update(conn, workout)
+  end
+
+  def render_update({:ok, workout}, conn, _) do
+    conn
+    |> put_flash(:info, "Workout updated successfully.")
+    |> redirect(to: workout_path(conn, :show, workout))
+  end
+
+  def render_update({:error, changeset}, conn, workout) do
+    render(conn, "edit.html", workout: workout, changeset: changeset)
   end
 
   def delete(conn, %{"id" => id}, user) do
-    workout = user |> user_workouts |> Repo.get!(id)
-    Repo.delete!(workout)
+    user |> user_workouts |> Repo.get!(id) |> Repo.delete!
 
     conn
     |> put_flash(:info, "Workout deleted successfully.")
