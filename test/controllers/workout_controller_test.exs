@@ -4,7 +4,8 @@ defmodule Trihard.WorkoutControllerTest do
   alias Trihard.User
 
   @user_attrs %{name: "lcp", email: "abc@gmail.com", password: "password"}
-  @valid_attrs %{date: {2012, 1, 1}, name: "some content"}
+  @valid_attrs %{date: {2012, 1, 1}, name: "some content",
+    swim_distance: 10.1, swim_seconds: 100}
   @invalid_attrs %{ name: 10 }
 
   setup %{conn: conn} = config do
